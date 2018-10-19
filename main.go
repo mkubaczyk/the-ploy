@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
-	// "net/http"
 	"encoding/json"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -26,7 +25,7 @@ type DeploymentModel struct {
 }
 
 func main() {
-	db, err = gorm.Open("sqlite3", "/tmp/test.db")
+	db, err = gorm.Open("sqlite3", "local.sqlite")
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -38,7 +37,7 @@ func main() {
 		api.GET("/deployments/:id", deploymentEndpoint)
 		api.POST("/deployments", createDeploymentEndpoint)
 	}
-	r.Run(":8080")
+	r.Run()
 }
 
 type QueryResult struct {
