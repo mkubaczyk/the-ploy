@@ -37,7 +37,7 @@ func main() {
 	r := gin.Default()
 	api := r.Group("/api")
 	{
-		api.GET("/deployments/:id", deploymentEndpoint)
+		api.GET("/deployments/:id", getDeploymentEndpoint)
 		api.POST("/deployments", createDeploymentEndpoint)
 	}
 	r.Run()
@@ -54,7 +54,7 @@ func createDeploymentEndpoint(c *gin.Context) {
 	c.JSON(http.StatusOK, queryResult)
 }
 
-func deploymentEndpoint(c *gin.Context) {
+func getDeploymentEndpoint(c *gin.Context) {
 	id := c.Param("id")
 	var deployment DeploymentModel
 	var queryResult DeploymentResult
