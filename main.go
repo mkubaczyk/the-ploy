@@ -1,25 +1,28 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"net/http"
 )
 
 var db *gorm.DB
 var err error
 
-type Deployment struct {
-	Id       string `json:"id"`
+type DeploymentParams struct {
 	Cloud    string `json:"cloud"`
 	Provider string `json:"provider"`
 }
 
 type DeploymentModel struct {
 	gorm.Model
+	Cloud    string
+	Provider string
+}
+
+type DeploymentResult struct {
+	Id       int
 	Cloud    string
 	Provider string
 }
@@ -40,30 +43,27 @@ func main() {
 	r.Run()
 }
 
-type QueryResult struct {
-	Cloud    string
-	Provider string
-}
-
 func createDeploymentEndpoint(c *gin.Context) {
-	var deploymentData Deployment
+	var deploymentData DeploymentParams
 	c.BindJSON(&deploymentData)
-	db.Create(&DeploymentModel{Cloud: deploymentData.Cloud, Provider: deploymentData.Provider})
+	create := db.Create(&DeploymentModel{Cloud: deploymentData.Cloud, Provider: deploymentData.Provider})
+	id := create.Value.(*DeploymentModel).ID
 	var deployment DeploymentModel
-	resp := db.First(&deployment, "cloud = ?", "AWS")
-	var queryResult QueryResult
-	db.Table("deployment_models").Select("cloud, provider").Where("provider = ?", "EB").Scan(&queryResult)
-	a, _ := json.Marshal(queryResult)
-	fmt.Println(string(a))
-	c.JSON(200, gin.H{"ID": resp.Value})
+	var queryResult DeploymentResult
+	db.First(&deployment, id).Scan(&queryResult)
+	c.JSON(http.StatusOK, queryResult)
 }
 
 func deploymentEndpoint(c *gin.Context) {
 	id := c.Param("id")
-	resp := Deployment{
-		Id:       id,
-		Cloud:    "AWS",
-		Provider: "EB",
+	var deployment DeploymentModel
+	var queryResult DeploymentResult
+	resp := db.First(&deployment, id)
+	if resp.Error != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": resp.Error.Error()})
+		c.Abort()
+		return
 	}
-	c.JSON(200, resp)
+	resp.Scan(&queryResult)
+	c.JSON(200, queryResult)
 }
