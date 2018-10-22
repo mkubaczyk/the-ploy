@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/mkubaczyk/theploy/config"
 	"github.com/mkubaczyk/theploy/db"
@@ -34,6 +35,7 @@ func CreateDeploymentEndpoint(c *gin.Context) {
 	db.DB.First(&deployment, id).Scan(&queryResult)
 	task := DeploymentTask{queryResult.Id}
 	b, _ := json.Marshal(task)
+	config.Logger.Info(fmt.Sprintf("publishing task for deployment of ID %v", queryResult.Id))
 	config.TaskQueue.Publish(string(b))
 	c.JSON(http.StatusOK, queryResult)
 }

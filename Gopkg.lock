@@ -14,6 +14,12 @@
   revision = "498743145e60c272b71d377c4e456335e4ef7524"
 
 [[projects]]
+  name = "github.com/apsdehal/go-logger"
+  packages = ["."]
+  revision = "7f202acc9de10d436c038053cfd7a60f6ae7e99a"
+  version = "1.2.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/gin-contrib/sse"
   packages = ["."]
@@ -110,6 +116,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b7029fe42313550766d378afb01629deceeadcd57de357d64287cc872fa125d7"
+  inputs-digest = "b656517ecb59a9b797eed6b2a54e86b3d196d818c5239c3428e5179a67e7e703"
   solver-name = "gps-cdcl"
   solver-version = 1

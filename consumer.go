@@ -29,10 +29,10 @@ func (consumer *Consumer) Consume(delivery rmq.Delivery) {
 	var task controllers.DeploymentTask
 	err := json.Unmarshal([]byte(delivery.Payload()), &task)
 	if err != nil {
-		fmt.Printf("rejected %v\n", task.Id)
+		config.Logger.Warning(fmt.Sprintf("rejected %v", task.Id))
 		delivery.Reject()
 		return
 	}
-	fmt.Printf("performing task %v\n", task.Id)
+	config.Logger.Info(fmt.Sprintf("performing task %v", task.Id))
 	delivery.Ack()
 }
