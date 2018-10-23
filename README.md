@@ -14,4 +14,4 @@ Run `dep ensure`
 
 ### Run
 
-`go run main.go`
+`go run main.go` for API and `go run consumer.go` for queue consumer
