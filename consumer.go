@@ -7,12 +7,11 @@ import (
 	"github.com/mkubaczyk/theploy/config"
 	"github.com/mkubaczyk/theploy/controllers"
 	"github.com/mkubaczyk/theploy/db"
+	"os"
 	"time"
 )
 
 type Consumer struct {
-	name string
-	dateCreated time.Time
 }
 
 func main() {
@@ -20,8 +19,9 @@ func main() {
 	defer db.DB.Close()
 	config.Init()
 	config.TaskQueue.StartConsuming(10, time.Second)
-	consumer := Consumer{name: "1", dateCreated: time.Now()}
-	config.TaskQueue.AddConsumer("1", &consumer)
+	hostname, _ := os.Hostname()
+	config.Logger.Info(fmt.Sprintf("Initializing %v consumer", hostname))
+	config.TaskQueue.AddConsumer(hostname, &Consumer{})
 	select {}
 }
 
