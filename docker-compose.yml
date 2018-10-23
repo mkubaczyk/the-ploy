@@ -1,8 +1,24 @@
 version: '3'
 
 services:
-  redis:
-    image: redis:4.0.6
+  api:
+    build: .
+    env_file:
+    - .env
     ports:
-    - 6379
+      - 8080:8080
+    restart: on-failure
+
+  redis:
+    image: redis:5.0.0-alpine
+    ports:
+      - 6379:6379
+    restart: on-failure
+
+  mysql:
+    image: mysql:5.7.23
+    env_file:
+      - .env
+    ports:
+      - 3307:3306
     restart: on-failure

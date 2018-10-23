@@ -37,6 +37,12 @@
   version = "v1.3.0"
 
 [[projects]]
+  name = "github.com/go-sql-driver/mysql"
+  packages = ["."]
+  revision = "d523deb1b23d913de5bdada721a6071e71283618"
+  version = "v1.4.0"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
   revision = "5a0f697c9ed9d68fef0116532c6e05cfeae00e55"
@@ -45,6 +51,7 @@
   name = "github.com/jinzhu/gorm"
   packages = [
     ".",
+    "dialects/mysql",
     "dialects/sqlite"
   ]
   revision = "6ed508ec6a4ecb3531899a69cbc746ccf65a4166"
@@ -85,6 +92,12 @@
   revision = "8e24a49d80f82323e1c4db1b5da3e0f31171a151"
 
 [[projects]]
+  name = "google.golang.org/appengine"
+  packages = ["cloudsql"]
+  revision = "ae0ab99deb4dc413a2b4bd6c8bdd0eb67f1e4d06"
+  version = "v1.2.0"
+
+[[projects]]
   branch = "v1"
   name = "gopkg.in/bsm/ratelimit.v1"
   packages = ["."]
@@ -116,6 +129,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b656517ecb59a9b797eed6b2a54e86b3d196d818c5239c3428e5179a67e7e703"
+  inputs-digest = "6c40c434c9aa040a0a18212f3c2bb01de6895620a84c1db1760454a5594ade56"
   solver-name = "gps-cdcl"
   solver-version = 1
