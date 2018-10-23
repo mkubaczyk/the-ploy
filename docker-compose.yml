@@ -2,12 +2,37 @@ version: '3'
 
 services:
   api:
-    build: .
+    image: theploy:api
+    build:
+      context: .
+      args:
+        BUILD_FILE: main.go
     env_file:
     - .env
     ports:
       - 8080:8080
     restart: on-failure
+
+  worker1:
+    image: theploy:worker
+    build:
+      context: .
+      args:
+        BUILD_FILE: consumer.go
+    env_file:
+    - .env
+    restart: on-failure
+
+  worker2:
+    image: theploy:worker
+    build:
+      context: .
+      args:
+        BUILD_FILE: consumer.go
+    env_file:
+    - .env
+    restart: on-failure
+
 
   redis:
     image: redis:5.0.0-alpine
